@@ -1,0 +1,43 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+venv/
+env/
+*.env
+
+# Django
+db.sqlite3
+media/
+staticfiles/
+*.log
+
+# Variables de entorno y seguridad
+.env
+secrets.json
+
+# Terraform (evita subir la configuración local)
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+
+# Docker
+docker-compose.override.yml
+.dockerignore
+
+# Node.js / React
+node_modules/
+dist/
+build/
+
+# VSCode
+.vscode/
+
+# JetBrains IDEs
+.idea/
+
+# Mac OS / Linux / Windows
+.DS_Store
+Thumbs.db
+
