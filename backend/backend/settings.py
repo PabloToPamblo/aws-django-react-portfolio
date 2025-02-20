@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import boto3
+import json
 import os
 from pathlib import Path
 from dotenv import load_dotenv
@@ -26,10 +27,32 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-p-th7g142tz&&pn^#o&mj^5db5y+-v3kzt1f_esf4tch$(7166'
 
+#AWS secret manager
+
+def get_secret():
+    """Obtiene las credenciales de AWS Secrets Manager."""
+    secret_name = "db/djangoservices"
+    region_name = "eu-west-3"
+
+    # Crear cliente de AWS Secrets Manager
+    session = boto3.session.Session()
+    client = session.client(service_name="secretsmanager", region_name=region_name)
+
+    try:
+        get_secret_value_response = client.get_secret_value(SecretId=secret_name)
+        secret = get_secret_value_response["SecretString"]
+        return json.loads(secret)  # Retorna las credenciales como diccionario
+    except Exception as e:
+        print(f"Error obteniendo el secreto: {e}")
+        return None
+
+# Obtener las credenciales
+secrets = get_secret()
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["15.188.55.56", "localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -106,13 +129,13 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT'),
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": secrets.get("dbInstanceIdentifier") if secrets else "default_dbname",
+        "USER": secrets.get("username") if secrets else "default_user",
+        "PASSWORD": secrets.get("password") if secrets else "default_password",
+        "HOST": secrets.get("host") if secrets else "localhost",
+        "PORT": secrets.get("port") if secrets else "5432",
     }
 }
 
@@ -151,6 +174,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
