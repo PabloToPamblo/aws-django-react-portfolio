@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        REPO_URL = 'https://github.com/tuusuario/aws-django-react-portfolio.git'
+        REPO_URL = 'https://github.com/PabloToPamblo/aws-django-react-portfolio.git'
         EC2_HOST = 'ubuntu@15.188.55.56'
         SSH_KEY = credentials('EC2-SSH-KEY')
     }
