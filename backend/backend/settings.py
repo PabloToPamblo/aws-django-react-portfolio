@@ -27,7 +27,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-p-th7g142tz&&pn^#o&mj^5db5y+-v3kzt1f_esf4tch$(7166'
 
-#AWS secret manager
+# AWS secret manager
+
 
 def get_secret():
     """Obtiene las credenciales de AWS Secrets Manager."""
@@ -46,6 +47,7 @@ def get_secret():
         print(f"Error obteniendo el secreto: {e}")
         return None
 
+
 # Obtener las credenciales
 secrets = get_secret()
 
@@ -53,7 +55,6 @@ secrets = get_secret()
 DEBUG = True
 
 ALLOWED_HOSTS = ["15.188.55.56", "localhost", "127.0.0.1"]
-
 
 # Application definition
 
@@ -64,11 +65,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     # Apps de terceros
     'rest_framework',  # carga la app de rest Framework para las templates
-    'rest_framework_simplejwt', # gestiona el refresh de los tokens
-
+    'rest_framework_simplejwt',  # gestiona el refresh de los tokens
     # App Project
     'core',
 ]
@@ -122,8 +121,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'backend.wsgi.application'
 
+WSGI_APPLICATION = 'backend.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -138,6 +137,7 @@ DATABASES = {
         "PORT": secrets.get("port") if secrets else "5432",
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -174,6 +174,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 # Default primary key field type
