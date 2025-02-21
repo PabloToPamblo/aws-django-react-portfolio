@@ -13,7 +13,17 @@ pipeline {
         }
         stage('Pruebas') {
             steps {
-                sh 'python3 -m unittest discover -s backend/tests'
+                script {
+                    // Asegurar que Python3 y pip están disponibles
+                    sh 'python3 --version'
+                    sh 'pip3 --version'
+
+                    // Instalar dependencias del proyecto desde requirements.txt
+                    sh 'pip3 install --user -r requirements.txt'
+
+                    // Ejecutar flake8 con la configuración de setup.cfg
+                    sh 'flake8 backend'
+                }
             }
         }
         stage('Desplegar en EC2') {
