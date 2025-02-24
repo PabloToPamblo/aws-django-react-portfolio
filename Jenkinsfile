@@ -23,16 +23,12 @@ pipeline {
                     
                     // Crear un entorno virtual
 
-                    sh """
-                    if [ ! -d "${VENV_PATH}" ]; then
-                        python3.9 -m venv ${VENV_PATH}
-                    fi
-                    """
+                    sh 'python3.9 -m venv venv'
 
                     // Instalar pip en el entorno virtual
 
                     sh """
-                    . ${VENV_PATH}/bin/activate
+                    . venv/bin/activate
                     python3.9 -m pip install --upgrade pip
                     deactivate
                     """
