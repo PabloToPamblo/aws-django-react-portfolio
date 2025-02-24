@@ -41,8 +41,8 @@ pipeline {
 	        script {
 		    // Activar el entorno virtual y ejecutar flake8
                     sh """
-                    . ${VENV_PATH}/bin/activate
-                    python3.9 -m pip install -r requirements.txt
+                    . venv/bin/activate
+                    python3.9 -m pip install -r backend/requirements.txt
                     flake8 backend
                     deactivate
                     """
