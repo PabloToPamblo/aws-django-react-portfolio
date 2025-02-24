@@ -49,21 +49,5 @@ pipeline {
 		}
 	    }
         }
-        stage('Desplegar en EC2') {
-            steps {
-                sshagent(['EC2-SSH-KEY']) {
-                    sh """
-                    ssh -o StrictHostKeyChecking=no ${EC2_HOST} <<EOF
-                        cd /home/ubuntu/aws-django-react-portfolio
-                        git pull origin Produccion
-                        source backend/venv/bin/activate
-                        pip install -r backend/requirements.txt
-                        sudo systemctl restart gunicorn
-                        sudo systemctl restart nginx
-                    EOF
-                    """
-                }
-            }
-        }
     }
 }
