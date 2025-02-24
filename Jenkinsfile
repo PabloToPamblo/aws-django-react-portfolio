@@ -4,7 +4,7 @@ pipeline {
         REPO_URL = 'https://github.com/PabloToPamblo/aws-django-react-portfolio.git'
         EC2_HOST = 'ubuntu@15.188.55.56'
         SSH_KEY = credentials('EC2-SSH-KEY')
-        VENV_PATH = '${WORKSPACE}/venv'  //Ruta entorno virtual
+        VENV_PATH = 'venv/'  //Ruta entorno virtual
     }
     stages {
         stage('Clonar Repositorio') {
