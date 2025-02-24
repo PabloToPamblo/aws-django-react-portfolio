@@ -43,7 +43,7 @@ pipeline {
                     sh """
                     . venv/bin/activate
                     python3.9 -m pip install -r backend/requirements.txt
-                    flake8 backend
+                    flake8 backend/backend
                     deactivate
                     """
 		}
