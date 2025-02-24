@@ -23,19 +23,19 @@ pipeline {
                     
                     // Crear un entorno virtual
 
-                    sh '''
+                    sh """
                     if [ ! -d "${VENV_PATH}" ]; then
                         python3.9 -m venv ${VENV_PATH}
                     fi
-                    '''
+                    """
 
                     // Instalar pip en el entorno virtual
 
-                    sh '''
+                    sh """
                     . ${VENV_PATH}/bin/activate
                     python3.9 -m pip install --upgrade pip
                     deactivate
-                    '''
+                    """
                 }
             }
         }
@@ -44,19 +44,19 @@ pipeline {
 	    steps {
 	        script {
 		    // Activar el entorno virtual y ejecutar flake8
-                    sh '''
+                    sh """
                     . ${VENV_PATH}/bin/activate
                     python3.9 -m pip install -r requirements.txt
                     flake8 backend
                     deactivate
-                    '''
+                    """
 		}
 	    }
         }
         stage('Desplegar en EC2') {
             steps {
                 sshagent(['EC2-SSH-KEY']) {
-                    sh '''
+                    sh """
                     ssh -o StrictHostKeyChecking=no ${EC2_HOST} <<EOF
                         cd /home/ubuntu/aws-django-react-portfolio
                         git pull origin Produccion
@@ -65,7 +65,7 @@ pipeline {
                         sudo systemctl restart gunicorn
                         sudo systemctl restart nginx
                     EOF
-                    '''
+                    """
                 }
             }
         }
